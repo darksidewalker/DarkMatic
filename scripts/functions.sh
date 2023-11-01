@@ -67,3 +67,17 @@ Press <OK> to start."
 do_nvidiahook () {
     sudo cp "$CONFIGS_DIR/nvidia.hook" "/etc/pacman.d/hooks/nvidia.hook"
 }
+
+#Enable multilib
+do_enablemultilib () {
+
+echo -ne "'\033[0;32m''\033[40m'
+-------------------------------------------------------------------------
+Enable multilib                                  
+-------------------------------------------------------------------------
+'\033[0m'"
+
+sudo sed -Ei '/[multilib]/s/^#//' /etc/pacman.conf
+sudo sed -Ei '/SigLevel\ \=\ PackageRequired/s/^#//' /etc/pacman.conf
+sudo sed -Ei '/Include\ \=\ \/etc\/pacman\.d\/mirrorlist/s/^#//' /etc/pacman.conf
+}

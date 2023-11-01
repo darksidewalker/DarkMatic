@@ -6,7 +6,10 @@
 
 # Set config file
 find_scriptdirs
-source $CONFIGS_DIR/colors.cfg
+source $SCRIPT_DIR/functions.sh
+source $CONFIGS_DIR
+source $LINUXTKG_DIR
+source $NVIDIAALL_DIR
 
 # Set variables - Do not alter
 CUSTOMKERNEL=false
@@ -38,17 +41,6 @@ Add parallel downloading for pacman
 '\033[0m'"
 
 sudo sed -i 's/^#Para/Para/' /etc/pacman.conf
-
-#Enable multilib
-#echo -ne "'\033[0;32m''\033[40m'
-#-------------------------------------------------------------------------
-#Enable multilib                                  
-#-------------------------------------------------------------------------
-#'\033[0m'"
-#
-#sudo sed -Ei '/[multilib]/s/^#//' /etc/pacman.conf
-#sudo sed -Ei '/SigLevel\ \=\ PackageRequired/s/^#//' /etc/pacman.conf
-#sudo sed -Ei '/Include\ \=\ \/etc\/pacman\.d\/mirrorlist/s/^#//' /etc/pacman.conf
 
 #Enable AUR in pamac
 echo -ne "'\033[0;32m''\033[40m'
@@ -150,7 +142,6 @@ elif [[ $CUSTOMNVIDIADRIVER == true ]]; then
     cp -f "$NVIDIAALL_DIR/customization.cfg" "$HOME/nvidia-all/customization.cfg"
     cd nvidia-all
     makepkg -si
-
 elif [[ $CUSTOMNVIDIADRIVER == false ]]; then
     echo -e "\nInstalling Nvidia-Drivers\n"
     do_nvidiahook
