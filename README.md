@@ -23,9 +23,8 @@ cd DarkMatic
 ```
 
 ### System Description
-This is completely automated arch install. It includes prompts to select your desired desktop environment, window manager, AUR helper, and whether to do a full or minimal install. The KDE desktop environment on arch includes all the packages I use on a daily basis, as well as some customizations.
-The original project was customozed to work with Manjaro and german locales.
-
+This is an install script post Manjaro Linux installation. It includes prompts to select your desired installation tasks. 
+The project was customozed to work with Manjaro and german locales.
 
 ## Troubleshooting
 
@@ -62,6 +61,6 @@ An issue is easier to resolve if it contains a few important pieces of informati
 ## Credits
 
 - Inspired from script called ArchMatic located here: https://github.com/rickellis/ArchMatic
-- Inspired from from https://github.com/ChrisTitusTech/ArchTitus
+- Inspired from https://github.com/ChrisTitusTech/ArchTitus
 - Custom Kernel setup https://github.com/Frogging-Family/linux-tkg
 - Custom NVIDIA-Driver setup https://github.com/Frogging-Family/nvidia-all
