@@ -14,11 +14,11 @@ set +a
 
 # Aks the user if the TKG Kernel script from linux-tkg will be used to install a costum kernel
 ask_customkernel() {
-echo -ne "$Green$On_Black
+echo -ne "'\033[0;32m''\033[40m'
 -------------------------------------------------------------------------
     Do you want to install a custom Kernel (tkg)?
 -------------------------------------------------------------------------
-$Color_Off"
+'\033[0m'"
 read -r -p "Install CUSTOM TKG Kernel? [y/N] " response
 response=${response,,}    # tolower
 if [[ "$response" =~ ^(yes|y|Y|Yes)$ ]]; then
@@ -31,11 +31,11 @@ fi
 }
 # Aks the user if the nvidia-all script will be used to install a costum nvidia driver
 ask_customnvidiadriver() {
-echo -ne "$Green$On_Black
+echo -ne "'\033[0;32m''\033[40m'
 -------------------------------------------------------------------------
     Do you want to install a custom NVIDIA driver?
 -------------------------------------------------------------------------
-$Color_Off"
+'\033[0m'"
 read -r -p "Install CUSTOM Nvidia Driver? [y/N] " response
 response=${response,,}    # tolower
 if [[ "$response" =~ ^(yes|y|Y|Yes)$ ]]; then
@@ -63,11 +63,11 @@ source $CONFIGS_DIR/colors.cfg
 CUSTOMKERNEL=false
 CUSTOMNVIDIADRIVER=false
 
-echo -ne "$Green$On_Black
+echo -ne "'\033[0;32m''\033[40m'
 -------------------------------------------------------------------------
 Setting up mirrors for optimal download          
 -------------------------------------------------------------------------
-$Color_Off"
+'\033[0m'"
 # Update database
 sudo pacman -Sy
 sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
@@ -82,41 +82,41 @@ echo "Changing the compression settings for "$nc" cores."
 sudo sed -i 's/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -T $nc -z -)/g' /etc/makepkg.conf
 
 #Add parallel downloading
-echo -ne "$Green$On_Black
+echo -ne "'\033[0;32m''\033[40m'
 -------------------------------------------------------------------------
 Add parallel downloading for pacman              
 -------------------------------------------------------------------------
-$Color_Off"
+'\033[0m'"
 
 sudo sed -i 's/^#Para/Para/' /etc/pacman.conf
 
 #Enable multilib
-#echo -ne "$Green$On_Black
+#echo -ne "'\033[0;32m''\033[40m'
 #-------------------------------------------------------------------------
 #Enable multilib                                  
 #-------------------------------------------------------------------------
-#$Color_Off"
+#'\033[0m'"
 #
 #sudo sed -Ei '/[multilib]/s/^#//' /etc/pacman.conf
 #sudo sed -Ei '/SigLevel\ \=\ PackageRequired/s/^#//' /etc/pacman.conf
 #sudo sed -Ei '/Include\ \=\ \/etc\/pacman\.d\/mirrorlist/s/^#//' /etc/pacman.conf
 
 #Enable AUR in pamac
-echo -ne "$Green$On_Black
+echo -ne "'\033[0;32m''\033[40m'
 -------------------------------------------------------------------------
 Enable AUR                                       
 -------------------------------------------------------------------------
-$Color_Off"
+'\033[0m'"
 
 sudo sed -Ei '/EnableAUR/s/^#//' /etc/pamac.conf
 sudo sed -Ei '/CheckAURUpdates/s/^#//' /etc/pamac.conf
 
 #Enable Flatpak in pamac
-echo -ne "$Green$On_Black
+echo -ne "'\033[0;32m''\033[40m'
 -------------------------------------------------------------------------
 Enable Flatpak                                   
 -------------------------------------------------------------------------
-$Color_Off"
+'\033[0m'"
 
 if [ $(grep -q "EnableFlatpak" /etc/pamac.conf) ]; then
 sudo sed -Ei '/EnableFlatpak/s/^#//' /etc/pamac.conf
@@ -128,11 +128,11 @@ echo -ne 'CheckFlatpakUpdates\n' /dev/null | sudo tee -a /etc/pamac.conf
 fi
 
 
-echo -ne "$Green$On_Black
+echo -ne "'\033[0;32m''\033[40m'
 -------------------------------------------------------------------------
 Installing Base System PKGs                      
 -------------------------------------------------------------------------
-$Color_Off"
+'\033[0m'"
 
 PKGS=($(cat $CONFIGS_DIR/pkgs-base.txt))
 
@@ -141,11 +141,11 @@ for PKG in "${PKGS[@]}"; do
     sudo pacman -S "$PKG" --noconfirm --needed
 done
 
-echo -ne "$Green$On_Black
+echo -ne "'\033[0;32m''\033[40m'
 -------------------------------------------------------------------------
 Installing User PKGs                             
 -------------------------------------------------------------------------
-$Color_Off"
+'\033[0m'"
 
 PKGS=($(cat $CONFIGS_DIR/pkgs-user.txt))
 
@@ -154,11 +154,11 @@ for PKG in "${PKGS[@]}"; do
     sudo pacman -S "$PKG" --noconfirm --needed
 done
 
-echo -ne "$Green$On_Black
+echo -ne "'\033[0;32m''\033[40m'
 -------------------------------------------------------------------------
 Installing Game PKGs                             
 -------------------------------------------------------------------------
-$Color_Off"
+'\033[0m'"
 
 PKGS=($(cat $CONFIGS_DIR/pkgs-game.txt))
 
@@ -169,11 +169,11 @@ done
 
 ask_customkernel
 if [[ $CUSTOMKERNEL = true ]]; then
-    echo -ne "$Green$On_Black
+    echo -ne "'\033[0;32m''\033[40m'
     -------------------------------------------------------------------------
     Installing Custom Kernel                         
     -------------------------------------------------------------------------
-    $Color_Off"
+    '\033[0m'"
     
     # Installing custom Kernel with linux-tkg
     cd $HOME
@@ -183,11 +183,11 @@ if [[ $CUSTOMKERNEL = true ]]; then
     makepkg -si
 fi
 
-echo -ne "$Green$On_Black
+echo -ne "'\033[0;32m''\033[40m'
 -------------------------------------------------------------------------
 Installing VGA Drivers                           
 -------------------------------------------------------------------------
-$Color_Off"
+'\033[0m'"
 
 if lspci | grep -E "(VGA compatible controller:).*?NVIDIA"; then
     ask_customnvidiadriver
@@ -215,11 +215,11 @@ elif lspci | grep -E "Integrated Graphics Controller"; then
     sudo pacman -S libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils --needed --noconfirm
 fi
 
-echo -ne "$Green$On_Black
+echo -ne "'\033[0;32m''\033[40m'
 -------------------------------------------------------------------------
 Installing AUR PKGs                              
 -------------------------------------------------------------------------
-$Color_Off"
+'\033[0m'"
 
 PKGS=($(cat $CONFIGS_DIR/pkgs-aur.txt))
 
@@ -229,11 +229,11 @@ for PKG in "${PKGS[@]}"; do
     fi
 done
 
-echo -ne "$Green$On_Black
+echo -ne "'\033[0;32m''\033[40m'
 -------------------------------------------------------------------------
 Installing FLATPAK PKGs                              
 -------------------------------------------------------------------------
-$Color_Off"
+'\033[0m'"
 
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
