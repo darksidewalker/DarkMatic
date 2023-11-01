@@ -1,20 +1,13 @@
 #!/bin/bash
 
-# Find the name of the folder the scripts are in
-SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-
-ask_startup () { whiptail --title "Automated Manjaro Linux Installer" --yesno --defaultno "$(date)
-
-The scripts are in directory named ManjaroMatic.
-
-This script will install PGKs for:
-- building
-- basic daily use software
-- gaming
-- inkluding some optimizations
-
-Press <OK> to start."
-}
+# Find the name of the workfolders
+set -a
+BASE_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"/scripts
+CONFIGS_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"/configs
+LINUXTKG_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"/linux-tkg
+NVIDIAALL_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"/nvidia-all
+set +a
 
 ask_startup
 

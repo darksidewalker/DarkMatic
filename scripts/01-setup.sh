@@ -1,55 +1,4 @@
-#!/usr/bin/env bash
-############################################################################################################
-#                                        FUNCTIONS                                                         #
-############################################################################################################
-# Find the name of the folder the scripts are in
-find_scriptdirs() {
-set -a
-SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-CONFIGS_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"/configs
-LINUXTKG_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"/linux-tkg
-NVIDIAALL_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"/nvidia-all
-set +a
-}
-
-# Aks the user if the TKG Kernel script from linux-tkg will be used to install a costum kernel
-ask_customkernel() {
-echo -ne "'\033[0;32m''\033[40m'
--------------------------------------------------------------------------
-    Do you want to install a custom Kernel (tkg)?
--------------------------------------------------------------------------
-'\033[0m'"
-read -r -p "Install CUSTOM TKG Kernel? [y/N] " response
-response=${response,,}    # tolower
-if [[ "$response" =~ ^(yes|y|Y|Yes)$ ]]; then
-    CUSTOMKERNEL=true
-elif [[ "$response" =~ ^(no|n|N|No)$ ]]; then
-    CUSTOMKERNEL=false
-else
-    CUSTOMKERNEL=false
-fi
-}
-# Aks the user if the nvidia-all script will be used to install a costum nvidia driver
-ask_customnvidiadriver() {
-echo -ne "'\033[0;32m''\033[40m'
--------------------------------------------------------------------------
-    Do you want to install a custom NVIDIA driver?
--------------------------------------------------------------------------
-'\033[0m'"
-read -r -p "Install CUSTOM Nvidia Driver? [y/N] " response
-response=${response,,}    # tolower
-if [[ "$response" =~ ^(yes|y|Y|Yes)$ ]]; then
-    CUSTOMNVIDIADRIVER=true
-elif [[ "$response" =~ ^(no|n|N|No)$ ]]; then
-    CUSTOMNVIDIADRIVER=false
-else
-    CUSTOMNVIDIADRIVER=false
-fi
-}
-
-do_nvidiahook () {
-sudo \cp $CONFIGS_DIR/nvidia.hook /etc/pacman.d/hooks/nvidia.hook
-}
+#!/usr/bin/bash
 
 ############################################################################################################
 #                                        SCRIPT                                                            #
@@ -168,7 +117,7 @@ for PKG in "${PKGS[@]}"; do
 done
 
 ask_customkernel
-if [[ $CUSTOMKERNEL = true ]]; then
+if [[ $CUSTOMKERNEL == true ]]; then
     echo -ne "'\033[0;32m''\033[40m'
     -------------------------------------------------------------------------
     Installing Custom Kernel                         
@@ -178,7 +127,7 @@ if [[ $CUSTOMKERNEL = true ]]; then
     # Installing custom Kernel with linux-tkg
     cd $HOME
     git clone https://github.com/Frogging-Family/linux-tkg.git
-    \cp $LINUXTKG_DIR/customization.cfg $HOME/linux-tkg/customization.cfg
+    cp -f "$LINUXTKG_DIR/customization.cfg" "$HOME/linux-tkg/customization.cfg"
     cd linux-tkg
     makepkg -si
 fi
@@ -192,16 +141,17 @@ Installing VGA Drivers
 if lspci | grep -E "(VGA compatible controller:).*?NVIDIA"; then
     ask_customnvidiadriver
 
-elif [[ $CUSTOMNVIDIADRIVER = true ]]; then
+elif [[ $CUSTOMNVIDIADRIVER == true ]]; then
     echo -e "\nInstalling custom Nvidia-Drivers\n"
     do_nvidiahook
     cd $HOME
-    git clo    if lspci | grep -E "(VGA compatible controller:).*?NVIDIA"; thenne https://github.com/Frogging-Family/nvidia-all.git
-    \cp $NVIDIAALL_DIR/customization.cfg $HOME/nvidia-all/customization.cfg
+    if lspci | grep -E "(VGA compatible controller:).*?NVIDIA"; then 
+    git clone https://github.com/Frogging-Family/nvidia-all.git
+    cp -f "$NVIDIAALL_DIR/customization.cfg" "$HOME/nvidia-all/customization.cfg"
     cd nvidia-all
     makepkg -si
 
-elif [[ $CUSTOMNVIDIADRIVER = false ]]; then
+elif [[ $CUSTOMNVIDIADRIVER == false ]]; then
     echo -e "\nInstalling Nvidia-Drivers\n"
     do_nvidiahook
     sudo mhwd -i pci video-nvidia

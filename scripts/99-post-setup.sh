@@ -1,6 +1,4 @@
-#!/usr/bin/env bash
-SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-source $SCRIPT_DIR/configs/colors.cfg
+#!/usr/bin/bash
 
 echo -ne "'\033[0;32m''\033[40m'
 -------------------------------------------------------------------------
@@ -63,6 +61,6 @@ CleanUp
 -------------------------------------------------------------------------
 '\033[0m'"
 
-rm -rf $HOME/nvidia-all
-rm -rf $HOME/linux-tkg
+rm -rf "$HOME/nvidia-all"
+rm -rf "$HOME/linux-tkg"
 flatpak uninstall --unused -y
