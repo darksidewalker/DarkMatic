@@ -1,0 +1,15 @@
+brave-browser
+firefox-i18n-de
+firefox-i18n-en-us
+handbrake
+hunspell-de
+hunspell-de_us
+hyphen-de
+hyphen-en
+man-pages-de
+thunderbird
+thunderbird-i18n-de
+thunderbird-i18n-en-us
+vlc
+libreoffice-fresh
+libreoffice-fresh-de

@@ -1,0 +1,4 @@
+configs/config.cfg
+# keep logs out
+configs/*.log
+*.log
