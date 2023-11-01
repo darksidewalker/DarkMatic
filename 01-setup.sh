@@ -122,9 +122,9 @@ if [ $(grep -q "EnableFlatpak" /etc/pamac.conf) ]; then
 sudo sed -Ei '/EnableFlatpak/s/^#//' /etc/pamac.conf
 sudo sed -Ei '/CheckFlatpakUpdates/s/^#//' /etc/pamac.conf
 else
-echo 'EnableFlatpak\n\n' 1> /dev/null | sudo tee -a /etc/pamac.conf
-echo '#EnableSnap\n\n' 1> /dev/null | sudo tee -a /etc/pamac.conf
-echo 'CheckFlatpakUpdates\n' 1> /dev/null | sudo tee -a /etc/pamac.conf
+echo -ne 'EnableFlatpak\n\n' /dev/null | sudo tee -a /etc/pamac.conf
+echo -ne '#EnableSnap\n\n' /dev/null | sudo tee -a /etc/pamac.conf
+echo -ne 'CheckFlatpakUpdates\n' /dev/null | sudo tee -a /etc/pamac.conf
 fi
 
 

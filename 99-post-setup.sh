@@ -27,7 +27,7 @@ Winetricks update
 $Color_Off"
 
 # Update winetricks to latest
-cd $HOME
+cd "$HOME" || { echo "Failure"; exit 1; }
 sudo winetricks --self-update
 
 echo -ne "$Green$On_Black
@@ -47,11 +47,14 @@ if [ $(grep -q -E "(error: some-package: signature from).*(is unknown trust)" $S
     -------------------------------------------------------------------------
     $Color_Off"
     
-    PKGS=($(cat $CONFIGS_DIR/pkgs-aur.txt))
-    
-    if [[ ! $(pamac list | grep $PKG) ]]; then
-    pamac build --no-confirm $PKG 
+   
+    PKGS="($(cat "$CONFIGS_DIR"/pkgs-aur.txt))"
+    for PKG in "${PKGS[@]}"; do
+    PKGCHECK=pamac list | grep -q "$PKG"
+    if ! PKGCHECK; then
+    pamac build --no-confirm "$PKG"
     fi
+    done
 fi
 
 echo -ne "$Green$On_Black
