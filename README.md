@@ -2,7 +2,7 @@ This is currently a work in progress.
 
 # Installer Script
 
-This README contains the steps I do to install and configure my Manjaro Arch Linux installation to turn it in a Gaming-Linux and added Docker capabilities.
+This README contains the steps I do to install and configure my Manjaro Arch Linux installation to turn it in a Gaming-Linux and added Docker and workspace capabilities.
 
 ---
 ## Create Manjaro ISO or Use Image
@@ -17,9 +17,9 @@ From initial Prompt type the following commands:
 
 ```
 sudo pacman -Sy --needed git
-git clone https://github.com/darksidewalker/ManjaroMatic
-cd ManjaroMatic
-./manjaromatic.sh
+git clone https://github.com/darksidewalker/DarkMatic
+cd DarkMatic
+./darkmatic.sh
 ```
 
 ### System Description
@@ -30,8 +30,8 @@ The original project was customozed to work with Manjaro and german locales.
 ## Troubleshooting
 
 __[Arch Linux RickEllis Installation Guide](https://github.com/rickellis/Arch-Linux-Install-Guide)__
-
 __[Arch Linux Wiki Installation Guide](https://wiki.archlinux.org/title/Installation_guide)__
+__[Manjaro Wiki](https://wiki.manjaro.org/index.php/Main_Page)__
 
 The main script will generate .log files for every script that is run as part of the installation process. These log files contain the terminal output so you can review any warnings or errors that occurred during installation and aid in troubleshooting. 
 ### No Wifi
@@ -61,7 +61,7 @@ An issue is easier to resolve if it contains a few important pieces of informati
     1. If a VM, what was the configuration used.
 ## Credits
 
-- Original packages script was a post install cleanup script called ArchMatic located here: https://github.com/rickellis/ArchMatic
-- Original project from https://github.com/ChrisTitusTech/ArchTitus
+- Inspired from script called ArchMatic located here: https://github.com/rickellis/ArchMatic
+- Inspired from from https://github.com/ChrisTitusTech/ArchTitus
 - Custom Kernel setup https://github.com/Frogging-Family/linux-tkg
 - Custom NVIDIA-Driver setup https://github.com/Frogging-Family/nvidia-all
