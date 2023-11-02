@@ -1,19 +1,7 @@
 #!/usr/bin/bash
 ############################################################################################################
-#                                        VARIABLE INIT                                                     #
-############################################################################################################
-# Set variables - Do not alter
-CUSTOMKERNEL=false
-CUSTOMNVIDIADRIVER=false
-############################################################################################################
 #                                        FUNCTIONS                                                         #
 ############################################################################################################
-# Find the name of the folder the scripts are in
-
-set -a
-SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-CONFIGS_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"/configs
-set +a
 
 # Aks the user if the TKG Kernel script from linux-tkg will be used to install a costum kernel
 ask_customkernel() {
@@ -24,9 +12,9 @@ ask_customkernel() {
     "
     read -r -p "Install CUSTOM TKG Kernel? [y/N] " response
     response=${response,,}    # tolower
-    if [[ "$response" =~ ^(yes|y|Y|Yes)$ ]]; then
+    if [[ "$response" =~ ^(yes|y)$ ]]; then
         CUSTOMKERNEL=true
-    elif [[ "$response" =~ ^(no|n|N|No)$ ]]; then
+    elif [[ "$response" =~ ^(no|n)$ ]]; then
         CUSTOMKERNEL=false
     else
         CUSTOMKERNEL=false
@@ -42,12 +30,12 @@ ask_customnvidiadriver() {
     "
     read -r -p "Install CUSTOM Nvidia Driver? [y/N] " response
     response=${response,,}    # tolower
-    if [[ "$response" =~ ^(yes|y|Y|Yes)$ ]]; then
-        Export CUSTOMNVIDIADRIVER=true
-    elif [[ "$response" =~ ^(no|n|N|No)$ ]]; then
-        Export CUSTOMNVIDIADRIVER=false
+    if [[ "$response" =~ ^(yes|y)$ ]]; then
+        CUSTOMNVIDIADRIVER=true
+    elif [[ "$response" =~ ^(no|n)$ ]]; then
+        CUSTOMNVIDIADRIVER=false
     else
-        Export CUSTOMNVIDIADRIVER=false
+        CUSTOMNVIDIADRIVER=false
     fi
 }
 
@@ -80,4 +68,37 @@ Enable multilib
 sudo sed -Ei '/[multilib]/s/^#//' /etc/pacman.conf
 sudo sed -Ei '/SigLevel\ \=\ PackageRequired/s/^#//' /etc/pacman.conf
 sudo sed -Ei '/Include\ \=\ \/etc\/pacman\.d\/mirrorlist/s/^#//' /etc/pacman.conf
+}
+
+# Installing pacman pkgs from textfile input
+do_installpacmanpkgs () {
+PKGS="($(cat "$CONFIGS_DIR/$1"))"
+
+for PKG in "${PKGS[@]}"; do
+    echo "INSTALLING: ${PKG}"
+    sudo pacman -S "$PKG" --noconfirm --needed
+done
+}
+
+# Installing aur pkgs from textfile input
+do_installaurpkgs () {
+PKGS="($(cat "$CONFIGS_DIR/$1"))"
+
+for PKG in "${PKGS[@]}"; do
+    checkaurpkgs=$(pamac list | grep "$PKG")
+    if [[ ! $checkaurpkgs ]]; then
+    pamac build --no-confirm "$PKG"
+    fi
+done
+}
+
+# Installing flatpak pkgs from textfile input
+do_installflatpakpkgs () {
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+PKGS="($(cat "$CONFIGS_DIR/$1"))"
+
+for PKG in "${PKGS[@]}"; do
+flatpak install --noninteractive flathub --system "$PKG"
+done
 }

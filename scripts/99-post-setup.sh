@@ -34,8 +34,9 @@ Checking Keyring
 -------------------------------------------------------------------------
 "
 
-if [ "$(grep -q -E "(error: some-package: signature from).*(is unknown trust)" $SCRIPT_DIR/01-setup.log)" ]; then
-    echo -ne "'\033[0;31m''\033[40m'Keyring is outdated or missing signatures ..."
+checksignatureerrors=$(grep -q -E "(error: some-package: signature from).*(is unknown trust)" "$SCRIPT_DIR/01-setup.log")
+if [[ $checksignatureerrors ]]; then
+    echo -ne "Keyring is outdated or missing signatures ..."
     echo -ne "Keyring Updating keyring - this may take a while ..."
     sudo pacman-key --refresh-keys
     
@@ -44,15 +45,8 @@ if [ "$(grep -q -E "(error: some-package: signature from).*(is unknown trust)" $
     Installing AUR PKGs again ...                             
     -------------------------------------------------------------------------
     "
-    
-   
-    PKGS="($(cat "$CONFIGS_DIR"/pkgs-aur.txt))"
-    for PKG in "${PKGS[@]}"; do
-    PKGCHECK=pamac list | grep -q "$PKG"
-    if ! PKGCHECK; then
-    pamac build --no-confirm "$PKG"
-    fi
-    done
+
+   do_installaurpkgs pkgs-aur.txt
 fi
 
 echo -ne "

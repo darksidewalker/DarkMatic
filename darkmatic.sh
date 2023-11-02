@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Find the name of the workfolders
+# Find the name of the workfolders and export to ENV
 set -a
 BASE_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"/scripts
@@ -12,7 +12,7 @@ set +a
 ask_startup
 
 if [[ ! $ask_startup ]]; then
-    echo -e "'\033[1;33m''\033[40m' Aborting - Nothing changed. "
+    echo -e "Aborting - Nothing changed."
     exit 1
 fi
 
@@ -28,6 +28,6 @@ Automated Manjaro Linux Installer
 echo -ne "
 -------------------------------------------------------------------------
 Automated Manjaro Linux Installer
-'\033[1;33m''\033[40m' Done - Please Reboot 
+Done - Please Reboot 
 ~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~
 "
