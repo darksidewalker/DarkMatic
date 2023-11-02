@@ -84,27 +84,25 @@ sudo sed -Ei '/Include\ \=\ \/etc\/pacman\.d\/mirrorlist/s/^#//' /etc/pacman.con
 
 # Installing pacman pkgs from textfile input
 do_installpacmanpkgs () {
-PKGS=("$(cat "$CONFIGS_DIR/$1")")
 
-for PKG in "${PKGS[@]}"; do
-echo -e "INSTALLING: ${PKG}"
-echo ""
-sudo pacman -S "$PKG" --noconfirm --needed
-done
+while IFS="" read -r PKG || [ -n "$PKG" ]
+    do
+    sudo pacman -S "$PKG" --noconfirm --needed
+done < "$CONFIGS_DIR/$1"
 }
 
 # Installing aur pkgs from textfile input
 do_installaurpkgs () {
-PKGS=("$(cat "$CONFIGS_DIR/$1")")
 
-for PKG in "${PKGS[@]}"; do
-checkaurpkgs=$(pamac list | grep "$PKG")
-if [[  $checkaurpkgs ]]; then
-echo -e "$checkaurpkgs"
-elif [[ ! $checkaurpkgs ]]; then
-pamac build --no-confirm "$PKG"
-fi
-done
+while IFS="" read -r PKG || [ -n "$PKG" ]
+    do
+    checkaurpkgs=$(pamac list | grep -c "$PKG")
+    if [ "$checkaurpkgs" -gt 0 ]; then
+    echo "$PKG"
+    elif [ "$checkaurpkgs" -eq 0 ]; then
+    sudo pamac build --no-confirm "$PKG"
+    fi
+done < "$CONFIGS_DIR/$1"
 }
 
 # Installing flatpak pkgs from textfile input
