@@ -17,11 +17,11 @@ set +a
 
 # Aks the user if the TKG Kernel script from linux-tkg will be used to install a costum kernel
 ask_customkernel() {
-    echo -ne "'\033[0;32m''\033[40m'
+    echo -ne "
     -------------------------------------------------------------------------
         Do you want to install a custom Kernel (tkg)?
     -------------------------------------------------------------------------
-    '\033[0m'"
+    "
     read -r -p "Install CUSTOM TKG Kernel? [y/N] " response
     response=${response,,}    # tolower
     if [[ "$response" =~ ^(yes|y|Y|Yes)$ ]]; then
@@ -35,11 +35,11 @@ ask_customkernel() {
 
 # Aks the user if the nvidia-all script will be used to install a costum nvidia driver
 ask_customnvidiadriver() {
-    echo -ne "'\033[0;32m''\033[40m'
+    echo -ne "
     -------------------------------------------------------------------------
         Do you want to install a custom NVIDIA driver?
     -------------------------------------------------------------------------
-    '\033[0m'"
+    "
     read -r -p "Install CUSTOM Nvidia Driver? [y/N] " response
     response=${response,,}    # tolower
     if [[ "$response" =~ ^(yes|y|Y|Yes)$ ]]; then
@@ -71,11 +71,11 @@ do_nvidiahook () {
 #Enable multilib
 do_enablemultilib () {
 
-echo -ne "'\033[0;32m''\033[40m'
+echo -ne "
 -------------------------------------------------------------------------
 Enable multilib                                  
 -------------------------------------------------------------------------
-'\033[0m'"
+"
 
 sudo sed -Ei '/[multilib]/s/^#//' /etc/pacman.conf
 sudo sed -Ei '/SigLevel\ \=\ PackageRequired/s/^#//' /etc/pacman.conf

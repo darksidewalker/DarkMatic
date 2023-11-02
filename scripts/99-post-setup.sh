@@ -1,49 +1,49 @@
 #!/usr/bin/bash
 
-echo -ne "'\033[0;32m''\033[40m'
+echo -ne "
 -------------------------------------------------------------------------
 Increasing file watcher count                    
 -------------------------------------------------------------------------
-'\033[0m'"
+"
 
 # This prevents a "too many files" error in Visual Studio Code
 echo fs.inotify.max_user_watches=524288 | sudo tee /etc/sysctl.d/40-max-user-watches.conf && sudo sysctl --system
 
-echo -ne "'\033[0;32m''\033[40m'
+echo -ne "
 -------------------------------------------------------------------------
 Increasing max map count                         
 -------------------------------------------------------------------------
-'\033[0m'"
+"
 
 # This is for games with many open files
 echo vm.max_map_count=1048576 | sudo tee /usr/lib/sysctl.d/99-vm-max_map_count.conf && sudo sysctl --system
 
-echo -ne "'\033[0;32m''\033[40m'
+echo -ne "
 -------------------------------------------------------------------------
 Winetricks update                                
 -------------------------------------------------------------------------
-'\033[0m'"
+"
 
 # Update winetricks to latest
 cd "$HOME" || { echo "Failure"; exit 1; }
 sudo winetricks --self-update
 
-echo -ne "'\033[0;32m''\033[40m'
+echo -ne "
 -------------------------------------------------------------------------
 Checking Keyring                                       
 -------------------------------------------------------------------------
-'\033[0m'"
+"
 
 if [ "$(grep -q -E "(error: some-package: signature from).*(is unknown trust)" $SCRIPT_DIR/01-setup.log)" ]; then
-    echo -ne "'\033[0;31m''\033[40m'Keyring is outdated or missing signatures ...'\033[0m'"
-    echo -ne "'\033[0;32m''\033[40m'Keyring Updating keyring - this may take a while ...'\033[0m'"
+    echo -ne "'\033[0;31m''\033[40m'Keyring is outdated or missing signatures ..."
+    echo -ne "Keyring Updating keyring - this may take a while ..."
     sudo pacman-key --refresh-keys
     
-    echo -ne "'\033[0;32m''\033[40m'
+    echo -ne "
     -------------------------------------------------------------------------
     Installing AUR PKGs again ...                             
     -------------------------------------------------------------------------
-    '\033[0m'"
+    "
     
    
     PKGS="($(cat "$CONFIGS_DIR"/pkgs-aur.txt))"
@@ -55,11 +55,11 @@ if [ "$(grep -q -E "(error: some-package: signature from).*(is unknown trust)" $
     done
 fi
 
-echo -ne "'\033[0;32m''\033[40m'
+echo -ne "
 -------------------------------------------------------------------------
 CleanUp                                          
 -------------------------------------------------------------------------
-'\033[0m'"
+"
 
 rm -rf "$HOME/nvidia-all"
 rm -rf "$HOME/linux-tkg"

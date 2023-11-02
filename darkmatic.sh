@@ -12,22 +12,22 @@ set +a
 ask_startup
 
 if [[ ! $ask_startup ]]; then
-    echo -e "'\033[1;33m''\033[40m' Aborting - Nothing changed. '\033[0;32m''\033[40m'"
+    echo -e "'\033[1;33m''\033[40m' Aborting - Nothing changed. "
     exit 1
 fi
 
-echo -ne "'\033[0;32m''\033[40m'
+echo -ne "
 ~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~
 Automated Manjaro Linux Installer
 -------------------------------------------------------------------------
-'\033[0m'"
+"
 
     ( bash "$SCRIPT_DIR/01-setup.sh" )|& tee 01-setup.log
     ( bash "$SCRIPT_DIR/99-post-setup.sh" )|& tee 99-post-setup.log
     
-echo -ne "'\033[0;32m''\033[40m'
+echo -ne "
 -------------------------------------------------------------------------
 Automated Manjaro Linux Installer
-'\033[1;33m''\033[40m' Done - Please Reboot '\033[0;32m''\033[40m'
+'\033[1;33m''\033[40m' Done - Please Reboot 
 ~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~
-'\033[0m'"
+"
