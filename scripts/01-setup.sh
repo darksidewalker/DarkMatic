@@ -58,7 +58,7 @@ if [ "$flatpackcheck" -gt 0 ]; then
 sudo sed -Ei '/EnableFlatpak/s/^#//' /etc/pamac.conf
 sudo sed -Ei '/CheckFlatpakUpdates/s/^#//' /etc/pamac.conf
 elif [ "$flatpackcheck" -eq 0 ]; then
-echo -ne 'EnableFlatpak\n\n' | sudo tee -a /etc/pamac.conf
+echo -ne '\nEnableFlatpak\n\n' | sudo tee -a /etc/pamac.conf
 echo -ne '#EnableSnap\n\n' | sudo tee -a /etc/pamac.conf
 echo -ne 'CheckFlatpakUpdates\n' | sudo tee -a /etc/pamac.conf
 fi
