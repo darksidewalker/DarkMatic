@@ -1,5 +1,11 @@
 #!/usr/bin/bash
 
+############################################################################################################
+#                                        SCRIPT                                                            #
+############################################################################################################
+
+source "$SCRIPT_DIR/functions.sh"
+
 echo -ne "
 -------------------------------------------------------------------------
 Increasing file watcher count                    
@@ -34,7 +40,7 @@ Checking Keyring
 -------------------------------------------------------------------------
 "
 
-checksignatureerrors=$(grep -q -E "(error: some-package: signature from).*(is unknown trust)" "$SCRIPT_DIR/01-setup.log")
+checksignatureerrors=$(grep -q -E "(error: some-package: signature from).*(is unknown trust)" "$BASE_DIR/01-setup.log")
 if [[ $checksignatureerrors ]]; then
     echo -ne "Keyring is outdated or missing signatures ..."
     echo -ne "Keyring Updating keyring - this may take a while ..."

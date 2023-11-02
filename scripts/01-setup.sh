@@ -4,23 +4,22 @@
 #                                        SCRIPT                                                            #
 ############################################################################################################
 
-# Set config file
-source "$SCRIPT_DIR"
-source "$CONFIGS_DIR"
-source "$LINUXTKG_DIR"
-source "$NVIDIAALL_DIR"
+source "$SCRIPT_DIR/functions.sh"
+
+
+# Update database
+sudo pacman -Sy
 
 echo -ne "
 -------------------------------------------------------------------------
 Setting up mirrors for optimal download          
 -------------------------------------------------------------------------
 "
-# Update database
-sudo pacman -Sy
 sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
 sudo pacman-mirrors --geoip
 
 nc=$(grep -c ^processor /proc/cpuinfo)
+echo "-------------------------------------------------"
 echo "You have $nc cores."
 echo "-------------------------------------------------"
 echo "Changing the makeflags for $nc cores."
@@ -59,9 +58,9 @@ if [[ "$flatpackcheck" ]]; then
 sudo sed -Ei '/EnableFlatpak/s/^#//' /etc/pamac.conf
 sudo sed -Ei '/CheckFlatpakUpdates/s/^#//' /etc/pamac.conf
 else
-echo -ne 'EnableFlatpak\n\n' /dev/null | sudo tee -a /etc/pamac.conf
-echo -ne '#EnableSnap\n\n' /dev/null | sudo tee -a /etc/pamac.conf
-echo -ne 'CheckFlatpakUpdates\n' /dev/null | sudo tee -a /etc/pamac.conf
+echo -ne 'EnableFlatpak\n\n' | sudo tee -a /etc/pamac.conf
+echo -ne '#EnableSnap\n\n' | sudo tee -a /etc/pamac.conf
+echo -ne 'CheckFlatpakUpdates\n' | sudo tee -a /etc/pamac.conf
 fi
 
 

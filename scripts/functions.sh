@@ -6,10 +6,10 @@
 # Aks the user if the TKG Kernel script from linux-tkg will be used to install a costum kernel
 ask_customkernel() {
     echo -ne "
-    -------------------------------------------------------------------------
-        Do you want to install a custom Kernel (tkg)?
-    -------------------------------------------------------------------------
-    "
+-------------------------------------------------------------------------
+    Do you want to install a custom Kernel (tkg)?
+-------------------------------------------------------------------------
+"
     read -r -p "Install CUSTOM TKG Kernel? [y/N] " response
     response=${response,,}    # tolower
     if [[ "$response" =~ ^(yes|y)$ ]]; then
@@ -39,17 +39,29 @@ ask_customnvidiadriver() {
     fi
 }
 
-ask_startup () { whiptail --title "Automated Manjaro Linux Installer" --yesno --defaultno "$(date)
+ask_startup () { 
+echo -ne "
+    -------------------------------------------------------------------------
+        Automated Manjaro Linux Installer
+    -------------------------------------------------------------------------
+    The scripts are in directory named DarkMatic.
 
-The scripts are in directory named ManjaroMatic.
-
-This script will install PGKs for:
-- building
-- basic daily use software
-- gaming
-- inkluding some optimizations
-
-Press <OK> to start."
+    This script will install PGKs for:
+    - building
+    - basic daily use software
+    - gaming
+    - inkluding some optimizations
+    
+    "
+    read -r -p "Start the script? [y/N] " response
+    response=${response,,}    # tolower
+    if [[ "$response" =~ ^(yes|y)$ ]]; then
+        STARTSCRIPT=true
+    elif [[ "$response" =~ ^(no|n)$ ]]; then
+        STARTSCRIPT=false
+    else
+        STARTSCRIPT=false
+    fi
 }
 
 do_nvidiahook () {
@@ -72,23 +84,26 @@ sudo sed -Ei '/Include\ \=\ \/etc\/pacman\.d\/mirrorlist/s/^#//' /etc/pacman.con
 
 # Installing pacman pkgs from textfile input
 do_installpacmanpkgs () {
-PKGS="($(cat "$CONFIGS_DIR/$1"))"
+PKGS=("$(cat "$CONFIGS_DIR/$1")")
 
 for PKG in "${PKGS[@]}"; do
-    echo "INSTALLING: ${PKG}"
-    sudo pacman -S "$PKG" --noconfirm --needed
+echo -e "INSTALLING: ${PKG}"
+echo ""
+sudo pacman -S "$PKG" --noconfirm --needed
 done
 }
 
 # Installing aur pkgs from textfile input
 do_installaurpkgs () {
-PKGS="($(cat "$CONFIGS_DIR/$1"))"
+PKGS=("$(cat "$CONFIGS_DIR/$1")")
 
 for PKG in "${PKGS[@]}"; do
-    checkaurpkgs=$(pamac list | grep "$PKG")
-    if [[ ! $checkaurpkgs ]]; then
-    pamac build --no-confirm "$PKG"
-    fi
+checkaurpkgs=$(pamac list | grep "$PKG")
+if [[  $checkaurpkgs ]]; then
+echo -e "$checkaurpkgs"
+elif [[ ! $checkaurpkgs ]]; then
+pamac build --no-confirm "$PKG"
+fi
 done
 }
 
@@ -96,9 +111,8 @@ done
 do_installflatpakpkgs () {
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
-PKGS="($(cat "$CONFIGS_DIR/$1"))"
-
-for PKG in "${PKGS[@]}"; do
-flatpak install --noninteractive flathub --system "$PKG"
-done
+while IFS="" read -r PKG || [ -n "$PKG" ]
+do
+  flatpak install --noninteractive flathub --system "$PKG"
+done < "$CONFIGS_DIR/$1"
 }
