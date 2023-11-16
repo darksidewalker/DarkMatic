@@ -6,6 +6,20 @@
 
 source "$SCRIPT_DIR/functions.sh"
 
+# Ask if the script should run
+ask_startup
+# Ask to install custom Kernel with linux-tkg
+ask_customkernel
+# Detect NVIDIA VGA
+if lspci | grep -E "(VGA compatible controller:).*?NVIDIA"; then
+    # Ask to install custom NVIDIA Driver
+    ask_customnvidiadriver
+fi
+
+if [[ ! $STARTSCRIPT == true ]]; then
+    echo -e "Aborting - Nothing changed."
+    exit 1
+fi
 
 # Update database
 sudo pacman -Sy
@@ -87,15 +101,12 @@ Installing Game PKGs
 
 do_installpacmanpkgs pkgs-game.txt
 
-# Custom Kernel with linux-tkg
-ask_customkernel
 if [[ $CUSTOMKERNEL == true ]]; then
     echo -ne "
     -------------------------------------------------------------------------
     Installing Custom Kernel                         
     -------------------------------------------------------------------------
     "
-    
     # Installing custom Kernel with linux-tkg
     cd "$HOME" || { echo "Failure"; exit 1; }
     git clone https://github.com/Frogging-Family/linux-tkg.git
@@ -110,11 +121,6 @@ echo -ne "
 Installing VGA Drivers                           
 -------------------------------------------------------------------------
 "
-# Detect NVIDIA VGA
-if lspci | grep -E "(VGA compatible controller:).*?NVIDIA"; then
-    ask_customnvidiadriver
-# Ask for cutom nvidia-all install
-fi
 # Install custom Nvidia distro driver
 if [[ $CUSTOMNVIDIADRIVER == true ]]; then
     echo -e "\nInstalling custom Nvidia-Drivers\n"

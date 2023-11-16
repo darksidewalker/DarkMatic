@@ -9,15 +9,6 @@ LINUXTKG_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd
 NVIDIAALL_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"/nvidia-all
 set +a
 
-source "$SCRIPT_DIR/functions.sh"
-
-ask_startup
-
-if [[ ! $STARTSCRIPT == true ]]; then
-    echo -e "Aborting - Nothing changed."
-    exit 1
-fi
-
 echo -ne "
 ~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~+~
 Automated Manjaro Linux Installer
