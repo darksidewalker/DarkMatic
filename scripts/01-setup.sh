@@ -114,16 +114,16 @@ Installing VGA Drivers
 if lspci | grep -E "(VGA compatible controller:).*?NVIDIA"; then
     ask_customnvidiadriver
 # Ask for cutom nvidia-all install
-elif [[ $CUSTOMNVIDIADRIVER == true ]]; then
+fi
+# Install custom Nvidia distro driver
+if [[ $CUSTOMNVIDIADRIVER == true ]]; then
     echo -e "\nInstalling custom Nvidia-Drivers\n"
     do_nvidiahook
     cd "$HOME" || { echo "Failure"; exit 1; }
-    if lspci | grep -E "(VGA compatible controller:).*?NVIDIA"; then 
-        git clone https://github.com/Frogging-Family/nvidia-all.git
-        cp -f "$NVIDIAALL_DIR/customization.cfg" "$HOME/nvidia-all/customization.cfg"
-        cd "nvidia-all" || { echo "Failure"; exit 1; }
-        makepkg -si
-    fi
+    git clone https://github.com/Frogging-Family/nvidia-all.git
+    cp -f "$NVIDIAALL_DIR/customization.cfg" "$HOME/nvidia-all/customization.cfg"
+    cd "nvidia-all" || { echo "Failure"; exit 1; }
+    makepkg -si
 # Install standard Nvidia distro driver
 elif [[ $CUSTOMNVIDIADRIVER == false ]]; then
     echo -e "\nInstalling Nvidia-Drivers\n"
