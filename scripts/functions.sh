@@ -65,10 +65,16 @@ echo -ne "
 }
 
 do_nvidiahook () {
+    echo -ne "
+    Creating hook folder under /etc/pacman.d/
+    "
     if [[ ! -d /etc/pacman.d/hooks/ ]]; then
     sudo mkdir /etc/pacman.d/hooks/
     fi
     if [[ ! -f /etc/pacman.d/hooks/nvidia.hook ]]; then
+    echo -ne "
+    Creating nvidia.hook file under /etc/pacman.d/hooks/
+    "
     sudo cp "$CONFIGS_DIR/nvidia.hook" "/etc/pacman.d/hooks/nvidia.hook"
     fi  
 }
