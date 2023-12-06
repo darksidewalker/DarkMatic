@@ -65,7 +65,12 @@ echo -ne "
 }
 
 do_nvidiahook () {
+    if [[ ! -d /etc/pacman.d/hooks/ ]]; then
+    sudo mkdir /etc/pacman.d/hooks/
+    fi
+    if [[ ! -f /etc/pacman.d/hooks/nvidia.hook ]]; then
     sudo cp "$CONFIGS_DIR/nvidia.hook" "/etc/pacman.d/hooks/nvidia.hook"
+    fi  
 }
 
 #Enable multilib
