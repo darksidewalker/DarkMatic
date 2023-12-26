@@ -16,6 +16,7 @@ protonup-qt
 steam
 steam-native-runtime
 vkd3d
+lib32-vkd3d
 giflib
 lib32-giflib
 libpng
