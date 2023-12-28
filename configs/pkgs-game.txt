@@ -4,6 +4,7 @@ wine-mono
 winetricks
 gamemode
 lib32-gamemode
+gamescope
 mangohud
 lib32-mangohud
 vulkan-headers

@@ -3,3 +3,4 @@ lib32-vkbasalt
 goverlay
 icaclient
 crunchy-cli
+heroic-games-launcher
